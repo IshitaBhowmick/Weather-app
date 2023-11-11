@@ -1,7 +1,6 @@
 *,*::before,*::after {
     margin: 0;
     padding: 0;
-    height: 100vh;
     box-sizing: border-box;
     font-family: 'Merriweather Sans', sans-serif;
 }
@@ -14,8 +13,8 @@
 }
 
 .wrapper{
-    width:100vw;
-    height:100vh;
+    width:100vmax;
+    height:100vmax;
     color: var(--colorLight2);
     background-image: linear-gradient(160deg, #112d4e 0%, #3f72af 100%);;
 }
@@ -106,6 +105,18 @@ h1 {
 
 .loading-container p{
     text-transform: uppercase;
+}
+
+.error-container{
+    display:none;
+}
+
+.error-container p{
+    font-weight: 300;
+}
+
+.error-container.active{
+    display:flex;
 }
 
 .user-info-container{

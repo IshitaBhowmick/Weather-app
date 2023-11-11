@@ -5,6 +5,7 @@ const userContainer = document.querySelector(".weather-container");
 const grantAccessContainer = document.querySelector(".grant-location-container");
 const searchForm = document.querySelector("[data-searchForm]");
 const loadingScreen = document.querySelector(".loading-container");
+const errorScreen = document.querySelector(".error-container");
 const userInfoContainer = document.querySelector(".user-info-container");
 
 //initially vairables need????
@@ -120,6 +121,7 @@ function getLocation() {
     }
     else {
         //HW - show an alert for no gelolocation support available
+        console.log("Current Location not loaded");
     }
 }
 
@@ -145,10 +147,16 @@ searchForm.addEventListener("submit", (e) => {
     let cityName = searchInput.value;
 
     if(cityName === "")
-        return;
+    {
+       console.log("Error");
+       return;
+    }
+        
     else 
         fetchSearchWeatherInfo(cityName);
 })
+
+
 
 async function fetchSearchWeatherInfo(city) {
     loadingScreen.classList.add("active");
@@ -156,15 +164,55 @@ async function fetchSearchWeatherInfo(city) {
     grantAccessContainer.classList.remove("active");
 
     try {
-        const response = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
-          );
-        const data = await response.json();
-        loadingScreen.classList.remove("active");
-        userInfoContainer.classList.add("active");
-        renderWeatherInfo(data);
+       /* if(err)
+        {  
+            console.log("Error in city name,check city name");   
+        }*/
+        
+            const response = await fetch(
+                `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
+              );
+            const data = await response.json();
+          
+                loadingScreen.classList.remove("active");
+                userInfoContainer.classList.add("active");
+                console.log("Hi");
+                renderWeatherInfo(data);
+            
+           
     }
     catch(err) {
-        //hW
+        console.log("Error need to resolve");
+        userInfoContainer.classList.remove("active")
+         errorScreen.classList.add("active");  
+         //hW
     }
 }
+
+
+/*
+let cityName = $("#cityName").val();
+let apiCall = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&mode=json&units=metric&appid=${CONSTANTS.appId}`;
+
+$.getJSON(apiCall, weatherData => {
+  let cityName = weatherData.name;
+  let countryName = weatherData.sys.country;
+  let description = weatherData.weather[0].description;
+  let tempMin = weatherData.main.temp_min;
+  let tempMax = weatherData.main.temp_max;
+  $("#city").text(cityName);
+  $("#detail").text(description);
+  $("#country").text(countryName);
+  $("#mintemp").html(`Minimum: ${tempMin}<span>&#8451;</span>`);
+  $("#maxtemp").html(`Maximum: ${tempMax}<span>&#8451;</span>`);
+}).fail(() => {
+  alert("City doesn't Exist!!");
+  $("#cityName").val("");
+  $("#city").text("");
+  $("#detail").text("");
+  $("#country").text("");
+  $("#mintemp").html("");
+  $("#maxtemp").html("");
+});
+
+*/
